@@ -1,5 +1,6 @@
 #
-# A simple theme that displays basic information.
+# A simple theme based on Steeef,
+# optimized for rendering on Ubuntu Unity terminals.
 #
 # Authors:
 #   Debajit Adhikary <debajit@debajit.com>
@@ -72,8 +73,7 @@ function prompt_debajitbasic_setup {
   PROMPT_HOSTNAME="%{$fg_bold[blue]%}%m"
   PROMPT_CURRENT_DIRECTORY="%{$fg_bold[green]%}%2~"
   PROMPT_VCS_INFO='%B%F{cyan}${vcs_info_msg_0_}%f%b'
-  PROMPT_PROMPT_GLYPH="%{$fg_no_bold[magenta]%}%#%{$reset_color%}"
-  # PROMPT_PROMPT_GLYPH="%{$fg_bold[black]%}%#%{$reset_color%}"
+  PROMPT_PROMPT_GLYPH="%{$fg_bold[magenta]%}%#%{$reset_color%}"
 
   export PROMPT_COLORFUL="
 $PROMPT_USERNAME at $PROMPT_HOSTNAME  $PROMPT_CURRENT_DIRECTORY 
