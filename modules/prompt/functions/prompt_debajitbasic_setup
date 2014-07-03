@@ -1,0 +1,92 @@
+#
+# A simple theme that displays basic information.
+#
+# Authors:
+#   Debajit Adhikary <debajit@debajit.com>
+#
+# Screenshots:
+#   http://i.imgur.com/zLZNK22.png
+#
+
+#export VCS_STATUS_GLYPH="●"
+export VCS_STATUS_GLYPH="*"
+
+function +vi-git-status() {
+  # Check for untracked files or updated submodules since vcs_info does not.
+  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
+    hook_com[unstaged]="%B%F{red}$VCS_STATUS_GLYPH%f%b"
+  fi
+}
+
+function prompt_debajitbasic_precmd {
+  vcs_info
+}
+
+function prompt_debajitbasic_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent subst)
+
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+  autoload -Uz vcs_info
+
+  # Add hook for calling vcs_info before each command.
+  add-zsh-hook precmd prompt_debajitbasic_precmd
+
+  # Set vcs_info parameters.
+  zstyle ':vcs_info:*' enable bzr git hg svn
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:*' stagedstr "%B%F{green}$VCS_STATUS_GLYPH%f%b"
+  zstyle ':vcs_info:*' unstagedstr "%B%F{yellow}$VCS_STATUS_GLYPH%f%b"
+  zstyle ':vcs_info:*' formats " %b%c%u"
+  zstyle ':vcs_info:*' actionformats " %b%c%u|%B%F{cyan}%a%f%b"
+  zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat "%b|%B%F{cyan}%r%f%b"
+  zstyle ':vcs_info:git*+set-message:*' hooks git-status
+
+  #
+  # Prompt
+  # https://wiki.archlinux.org/index.php/zsh
+  #
+  
+  autoload -U colors && colors
+  
+  # Basic Prompt
+  export PROMPT_BASIC="%n@%m %1~%# "
+
+  # Prompt for color testing
+  # PROMPT=$PROMPT_COLOR_TEST
+  STR="This"
+  export PROMPT_COLOR_TEST="%{%{$fg_no_bold[magenta]%}$STR%{$fg[magenta]%}$STR%{$fg_bold[magenta]%}$STR
+  $fg_no_bold[blue]%}$STR%{$fg[blue]%}$STR%{$fg_bold[blue]%}$STR
+  %{%{$fg_no_bold[cyan]%}$STR%{$fg[cyan]%}$STR%{$fg_bold[cyan]%}$STR
+  $fg_no_bold[green]%}$STR%{$fg[green]%}$STR%{$fg_bold[green]%}$STR
+  %{$fg_no_bold[yellow]%}$STR%{$fg[yellow]%}$STR%{$fg_bold[yellow]%}$STR
+  %{$fg_no_bold[red]%}$STR%{$fg[red]%}$STR%{$fg_bold[red]%}$STR
+  %{$fg_no_bold[white]%}$STR%{$fg[white]%}$STR%{$fg_bold[white]%}$STR
+  %{$fg_no_bold[black]%}$STR%{$fg[black]%}$STR%{$fg_bold[black]%}$STR
+  %{$reset_color%}%#  "
+
+  # My colorful prompt
+  PROMPT_USERNAME="%{$fg_bold[yellow]%}%n%{$reset_color%}"
+  PROMPT_HOSTNAME="%{$fg_bold[blue]%}%m"
+  PROMPT_CURRENT_DIRECTORY="%{$fg_bold[green]%}%2~"
+  PROMPT_VCS_INFO='%B%F{cyan}${vcs_info_msg_0_}%f%b'
+  PROMPT_PROMPT_GLYPH="%{$fg_no_bold[magenta]%}%#%{$reset_color%}"
+  # PROMPT_PROMPT_GLYPH="%{$fg_bold[black]%}%#%{$reset_color%}"
+
+  export PROMPT_COLORFUL="
+$PROMPT_USERNAME at $PROMPT_HOSTNAME  $PROMPT_CURRENT_DIRECTORY 
+$PROMPT_PROMPT_GLYPH "
+  export PROMPT="$PROMPT_COLORFUL"
+  export RPROMPT="$PROMPT_VCS_INFO"
+
+
+  # Define prompts.
+  
+  # PROMPT="$PROMPT_VCS_INFO %# "
+  # RPROMPT=''
+}
+
+prompt_debajitbasic_setup "$@"
+
