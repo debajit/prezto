@@ -70,8 +70,8 @@ function prompt_debajitbasic_setup {
 
   # My colorful prompt
   PROMPT_USERNAME="%{$fg_bold[yellow]%}%n%{$reset_color%}"
-  PROMPT_HOSTNAME="%{$fg_bold[blue]%}%m"
-  PROMPT_CURRENT_DIRECTORY="%{$fg_bold[green]%}%2~"
+  PROMPT_HOSTNAME="%{$fg_bold[blue]%}%m%{$reset_color%}"
+  PROMPT_CURRENT_DIRECTORY="%{$fg_bold[green]%}%~"
   PROMPT_VCS_INFO='%B%F{cyan}${vcs_info_msg_0_}%f%b'
   PROMPT_PROMPT_GLYPH="%{$fg_bold[magenta]%}%#%{$reset_color%}"
 
