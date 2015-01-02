@@ -1,0 +1,5 @@
+# Tools
+alias ag='ag --pager less'
+alias agr='ag --ruby'
+alias agy='ag --yaml'
+alias agh='ag --html'
