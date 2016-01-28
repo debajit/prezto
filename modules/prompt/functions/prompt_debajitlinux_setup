@@ -1,0 +1,107 @@
+#
+# A theme based on Steve Losh's Extravagant Prompt with vcs_info integration.
+#
+# Authors:
+#   Steve Losh <steve@stevelosh.com>
+#   Bart Trojanowski <bart@jukie.net>
+#   Brian Carper <brian@carper.ca>
+#   steeef <steeef@gmail.com>
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+# Screenshots:
+#   http://i.imgur.com/HyRvv.png
+#
+
+function prompt_debajitlinux_precmd {
+  # Check for untracked files or updated submodules since vcs_info does not.
+  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
+    #branch_format="(${_prompt_debajitlinux_colors[1]}%b%f%u%c${_prompt_debajitlinux_colors[4]}●%f)"
+    branch_format="(${_prompt_debajitlinux_colors[1]}%b%f%u%c${_prompt_debajitlinux_colors[4]}*%f)"
+  else
+    branch_format="(${_prompt_debajitlinux_colors[1]}%b%f%u%c)"
+  fi
+
+  zstyle ':vcs_info:*:prompt:*' formats "${branch_format}"
+
+  vcs_info 'prompt'
+
+  if (( $+functions[python-info] )); then
+    python-info
+  fi
+}
+
+function prompt_debajitlinux_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent subst)
+
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+  autoload -Uz vcs_info
+
+  # Add hook for calling vcs_info before each command.
+  add-zsh-hook precmd prompt_debajitlinux_precmd
+
+  # Use extended color pallete if available.
+  if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
+    _prompt_debajitlinux_colors=(
+      "%F{81}"  # Turquoise
+      "%F{166}" # Orange
+      "%F{135}" # Purple
+      "%F{161}" # Hotpink
+      "%F{118}" # Limegreen
+    )
+  else
+    _prompt_debajitlinux_colors=(
+      "%F{cyan}"
+      "%F{yellow}"
+      "%F{magenta}"
+      "%F{red}"
+      "%F{green}"
+    )
+  fi
+
+  # Formats:
+  #   %b - branchname
+  #   %u - unstagedstr (see below)
+  #   %c - stagedstr (see below)
+  #   %a - action (e.g. rebase-i)
+  #   %R - repository path
+  #   %S - path in the repository
+  local branch_format="(%B${_prompt_debajitlinux_colors[1]}%b%f%u%c)"
+  local action_format="(%B${_prompt_debajitlinux_colors[5]}%a%f%b)"
+  # local unstaged_format="${_prompt_debajitlinux_colors[2]}●%f"
+  local unstaged_format="%B${_prompt_debajitlinux_colors[2]}*%f%b"
+  # local staged_format="${_prompt_debajitlinux_colors[5]}●%f"
+  local staged_format="%B${_prompt_debajitlinux_colors[5]}*%f%b"
+
+  # Set vcs_info parameters.
+  zstyle ':vcs_info:*' enable bzr git hg svn
+  zstyle ':vcs_info:*:prompt:*' check-for-changes true
+  zstyle ':vcs_info:*:prompt:*' unstagedstr "${unstaged_format}"
+  zstyle ':vcs_info:*:prompt:*' stagedstr "${staged_format}"
+  zstyle ':vcs_info:*:prompt:*' actionformats "${branch_format}${action_format}"
+  zstyle ':vcs_info:*:prompt:*' formats "${branch_format}"
+  zstyle ':vcs_info:*:prompt:*' nvcsformats   ""
+
+  # Set python-info parameters.
+  zstyle ':prezto:module:python:info:virtualenv' format '(%v)'
+
+  autoload -Uz colors
+
+  PROMPT_USERNAME="%{$fg_bold[yellow]%}%n%{$reset_color%}"
+  PROMPT_HOSTNAME="%{$fg_bold[blue]%}%m%{$reset_color%}"
+  PROMPT_CURRENT_DIRECTORY="%{$fg_bold[green]%}%~"
+  PROMPT_VCS_INFO='%B%F{cyan}${vcs_info_msg_0_}%f%b'
+  PROMPT_PROMPT_GLYPH="%{$fg_bold[magenta]%}%#%{$reset_color%}"
+
+
+  # Define prompts.
+  PROMPT="
+$PROMPT_USERNAME at $PROMPT_HOSTNAME in %B${_prompt_debajit_colors[5]}%~%f%b "%B'${vcs_info_msg_0_}'%b"
+"'$python_info[virtualenv]'"$PROMPT_PROMPT_GLYPH "
+  RPROMPT=''
+}
+
+prompt_debajitlinux_setup "$@"
+
