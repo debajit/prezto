@@ -12,7 +12,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 [[ -f $HOME/.aliases ]] && source $HOME/.aliases        # Custom aliases
-[[ -f $HOME/.zshrc.local ]] && source ~/.zshrc.local    # Local config
+[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local    # Local config
 
 # Customize to your needs...
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
