@@ -98,7 +98,7 @@ function prompt_debajitlinux_setup {
 
   # Define prompts.
   PROMPT="
-$PROMPT_USERNAME at $PROMPT_HOSTNAME in %B${_prompt_debajit_colors[5]}%~%f%b "%B'${vcs_info_msg_0_}'%b"
+$PROMPT_USERNAME at $PROMPT_HOSTNAME in %B${_prompt_debajit_colors[5]}%3d%f%b "%B'${vcs_info_msg_0_}'%b"
 "'$python_info[virtualenv]'"$PROMPT_PROMPT_GLYPH "
   RPROMPT=''
 }
