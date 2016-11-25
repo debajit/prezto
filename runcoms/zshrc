@@ -15,4 +15,4 @@ fi
 [[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local    # Local config
 
 # Customize to your needs...
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.mix/escripts" # Add Mix escripts to PATH
