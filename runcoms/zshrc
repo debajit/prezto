@@ -6,9 +6,14 @@
 #   Debajit Adhikary <debajit@debajit.com>
 #
 
-[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local          # Local config
-[[ -f $HOME/.aliases ]] && source $HOME/.aliases                  # General aliases
-[[ -f $HOME/.aliases.local ]] && source $HOME/.aliases.local      # Local aliases
+# Sources the given dotfile from the home directory, if the dotfile
+# exists.
+function source_file() {
+    filename="$HOME/${1}"
+    [[ -f ${filename} ]] && source ${filename}
+}
+
+source_file ".zshrc.local"      # Local config (e.g. workplace-specific)
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -19,5 +24,8 @@ fi
 # prompt debajit
 prompt twofirewatch
 
-# Customize to your needs...
-export PATH="$PATH:$HOME/.mix/escripts" # Add Mix escripts to PATH
+# Set aliases last so that we can override them correctly
+source_file ".aliases"          # Global aliases
+source_file ".aliases.local"    # Local aliases
+source_file ".paths"            # Global path settings
+source_file ".env_vars"         # Environment variables
